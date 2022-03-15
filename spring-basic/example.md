@@ -1,5 +1,7 @@
 # 스프링 핵심 원리 이해-1
 
+[소스코드](example)
+
 ## 비즈니스 요구사항과 설계
 
 ### 회원
@@ -170,3 +172,33 @@ OCP
 애플리케이션 런타임 시점에 외부에서 실제 구현객체를 생성하고 클라이언트에 전달하여 서버의 실제 의존관계가 되는것을 의존관계 주입이라고 한다. 의존관계 주입을 사용하면 클라이언트 코드를 변경하지 않고, 클라이언트가 호출하는 대상의 타입 인스턴스를 변경할 수 있다. 또한, 의존관계 주입을 사용하면 정적인 클래스 의존관계를 변경하지 않고, 동적인 객체 인슽턴스 의존관계를 쉽게 변경할 수 있다.
 
 위에서 만든 AppConfig와 같이 객체를 생성하고 관리하며 의존관계를 연결해주는 것을 `IOC컨테이너` 또는 `DI컨테이너` 라고 한다.
+
+## 스프링으로 전환하기
+
+지금까지는 순수한 자바코드로만 작성했다. 이제 스프링으로 바꿔보자.
+
+AppConfig에 `@Configuration` 과 `@Bean` 을 사용해주면 스프링 컨테이너에 등록이 된다.
+
+```java
+public class MemberApp {
+
+  public static void main(String[] args) {
+    ApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class);
+    MemberService memberService = applicationContext.getBean("memberService", MemberService.class);
+  }
+}
+```
+
+기존에 생성한 AppConfig를 통해 스프링 컨테이너를 생성하자.
+
+이후에는 `getBean` 함수를 통해 원하는 빈을 얻을 수 있다.
+
+`ApplicationContext` 를 스프링 컨테이너라 한다. 기존에는 개발자가 집적 `AppConfig` 를 이용해서 집적 객체를 생성해야 했지만 이후엔 스프링 컨테이너를 통해 사용할 수 있다.
+
+스프링 컨테이너는 `@Configuration` 안에 있는 `@Bean` 이라 적힌 메소드를 스프링 컨테이너에 등록한다. 이렇게 등록된 객체를 `스프링 빈` 이라고 한다.
+
+또한 스프링 빈은 `@Bean` 이 붙은 메소드의 이름을 스프링 빈의 이름으로 사용한다.
+
+이렇게 스프링컨테이너에 등록해놓으면 기존에 개발자가 집적 `AppConfig` 를 통해 객체를 생성해야 했던 작업을 스프링 컨테이너로 부터 찾아 사용할 수 있다.
+
+그렇다면 스프링 컨테이너를 사용했을 때 얻을 수 있는 장점은 무엇일까?
