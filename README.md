@@ -6,3 +6,4 @@
 - [스프링 컨테이너와 스프링 빈](spring-basic/spring_container_and_bean.md)
 - [싱글톤 컨테이너](spring-basic/singletone_container.md)
 - [컴포넌트 스캔](spring-basic/component_scan.md)
+- [의존관계 자동 주입](spring-basic/auto_di.md)
