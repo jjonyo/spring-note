@@ -1,5 +1,7 @@
 package hello.core.lifecylce;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 
@@ -26,11 +28,13 @@ public class NetworkClient {
     System.out.println("close" + url);
   }
 
+  @PostConstruct
   public void init() {
     connect();
     call("초기화 연결 메세지");
   }
 
+  @PreDestroy
   public void close() {
     disconnect();
   }

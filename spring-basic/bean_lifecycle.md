@@ -106,3 +106,34 @@ public class NetworkClient implements InitializingBean, DisposableBean {
 따라서, 혹시 close나 shutdown과 같은 함수가 있다면 destoryMethod가 자동으로 메소드를 추론하여 호출해준다. 따라서, 집적 스프링 빈으로 등록하면 종료메소드를 직접 적어주지 않아도 잘 동작하는 것을 볼 수 있다.
 
 추론기능을 사용하기 싫으면 `destoryMethod=""` 처럼 빈 공백을 지정하면 된다.
+
+## 어노테이션 @PostConstruct, @PreDestory
+
+원하는 메소드에 위 어노테이션을 붙이는 것 만으로 편리하게 라이프사이클을 적용할수 있다.
+스프링에서 가장 권장하는 방법이다.
+
+```java
+@PostConstruct
+  public void init() {
+    connect();
+    call("초기화 연결 메세지");
+  }
+
+  @PreDestroy
+  public void close() {
+    disconnect();
+  }
+```
+
+이렇게 어노테이션을 지정하면 된다.
+
+이는 스프링에 종속된 기술이 아니기에 다른 컨테이너에서도 동작하며, 매우 편리한 방법이다.
+또한 컴포넌트스캔과 잘 어울린다는 장점이 있다.
+
+유일한 단점은 외부 라이브러리에는 적용하지 못한다는 것이다. 외부라이브러리를 초기화, 종료 해야하면 `@Bean` 의 기능을 사용하자.
+
+정리
+
+- @PostConstruct, @PreDestroy 애노테이션을 사용하자
+- 코드를 고칠 수 없는 외부 라이브러리를 초기화,종료해야 하면 @Bean 의 initMethod , destroyMethod
+를 사용하자.
