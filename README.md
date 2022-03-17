@@ -8,3 +8,4 @@
 - [컴포넌트 스캔](spring-basic/component_scan.md)
 - [의존관계 자동 주입](spring-basic/auto_di.md)
 - [빈 생명주기와 콜백](spring-basic/bean_lifecycle.md)
+- [빈 스코프](spring-basic/bean_scope.md)
