@@ -89,3 +89,20 @@ public class NetworkClient implements InitializingBean, DisposableBean {
 
 다만 이 인터페이스는 스프링 전용 인터페이스로 해당 코드가 스프링 전용 인터페이스에 의존한다.
 또한 초기화, 소멸 메소드의 이름을 변경할 수 없다. 그리고 지금은 더 나은 방법들이 있어 거의 사용하지 않는다.
+
+## 빈 등록 초기화, 소멸 메소드 지정
+
+설정정보에 `@Bean(initMethod = "init", destroyMethod = "close")` 이렇게 메소드 이름을 지정하여 설정하는 것도 가능하다.
+
+해당 클래스의 내부에 위 이름으로 메소드를 만들면 된다. 이렇게 사용하면 메소드의 이름을 자유롭게 줄 수 있으며 스프링코드에 의존하지 않게 된다.
+
+### 종료메서드 추론
+
+`@Bean` 의 `destoryMethod` 에는 특별한 기능이 있다.
+
+대부분의 라이브러리들은 `close` 나 `shutdown` 이라는 이름의 종료 메서드를 사용한다.
+
+`@Bean` 의 destoryMethod는 기본값이 `(inferred)` 로 추론형태로 되어있다.
+따라서, 혹시 close나 shutdown과 같은 함수가 있다면 destoryMethod가 자동으로 메소드를 추론하여 호출해준다. 따라서, 집적 스프링 빈으로 등록하면 종료메소드를 직접 적어주지 않아도 잘 동작하는 것을 볼 수 있다.
+
+추론기능을 사용하기 싫으면 `destoryMethod=""` 처럼 빈 공백을 지정하면 된다.
